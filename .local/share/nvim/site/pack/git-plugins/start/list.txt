@@ -1,0 +1,9 @@
+vim-multiple-cursors
+auto-pairs
+nerdcommenter
+vim-closetag
+surround
+nerdtree
+lightline.vim
+nord-vim
+ale
