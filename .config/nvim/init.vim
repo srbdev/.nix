@@ -147,7 +147,7 @@ set lazyredraw
 autocmd BufWritePre * :%s/\s\+$//e
 
 " terminal emulator
-set shell=/usr/local/bin/zsh
+"set shell=/usr/local/bin/zsh
 
 
 packloadall
