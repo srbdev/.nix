@@ -3,6 +3,11 @@
 Dotfiles and setup for my *nix systems
 
 
+### tmux
+
+- tpm: https://github.com/tmux-plugins/tpm
+- Nord tmux: https://github.com/arcticicestudio/nord-tmux
+
 ### ALE Python packages
 
 ```zsh
