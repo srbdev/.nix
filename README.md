@@ -42,12 +42,12 @@ Install `jq`
 
 - MySQL:
 ```zsh
-% docker run --name mysql -e MYSQL_ROOT_PASSWORD=password -p 127.0.0.1:3306:3306 -d mysql
+% docker run --name mysql -e MYSQL_ROOT_PASSWORD=supersafepassword -p 127.0.0.1:3306:3306 -d mysql
 ```
 
 - postgres:
 ```zsh
-% docker run --name postgres -e POSTGRES_PASSWORD=foobar -p 127.0.0.1:5432:5432 -d postgres:alpine
+% docker run --name postgres -e POSTGRES_PASSWORD=supersafepassword -p 127.0.0.1:5432:5432 -d postgres:alpine
 ```
 
 - ElasticSearch:
@@ -59,6 +59,6 @@ Install `jq`
 - RabbitMQ:
 ```zsh
 % docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3-management-alpine
-% docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management-alpine
+% docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=supersafepassword rabbitmq:3-management-alpine
 
 ```
