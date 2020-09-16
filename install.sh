@@ -7,6 +7,7 @@ mkdir -p ~/.config/nvim/pack/airblade/start
 cp .config/nvim/init.vim ~/.config/nvim/
 cp .config/flake8 ~/.config/
 cp .pylintrc ~/.pylintrc
+cp .jshintrc ~/.jshintrc
 
 mkdir -p ~/.local/share/nvim/site/pack/git-plugins/start
 cp .local/share/nvim/site/pack/git-plugins/start/update.sh ~/.local/share/nvim/site/pack/git-plugins/start/
