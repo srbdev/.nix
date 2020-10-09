@@ -55,45 +55,50 @@ setup_neovim () {
 }
 
 install_neovim () {
-  read -p "Do you want to install neovim? [Y/n] " answer
+  read -p "Do you want to install neovim? [y/N] " answer
   case "$answer" in
-    n|N ) echo "skipping neovim install";;
-    * ) sudo apt install neovim -y;;
+    y|Y ) sudo apt install neovim -y;;
+    * ) echo "skipping neovim install";;
   esac
 
-  read -p "Do you want to setup neovim? [Y|n] " answer
+  read -p "Do you want to setup neovim? [y|N] " answer
   case "$answer" in
-    n|N ) echo "skipping neovim setup";;
-    * ) setup_neovim
+    y|Y ) setup_neovim;;
+    * ) echo "skipping neovim setup";;
   esac
 }
 
 
 install_tmux () {
-  read -p "Do you want to install tmux? [Y/n] " answer
+  read -p "Do you want to install tmux? [y/N] " answer
   case "$answer" in
-    n|N ) echo "skipping tmux install";;
-    * )
+    y|Y )
       sudo apt install tmux -y
       mkdir -p ~/.tmux/plugins
       git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
       cp .tmux.conf ~/.tmux.conf
       ;;
+    * ) echo "skipping tmux install";;
   esac
 }
 
 
 setup_bash () {
-  cp .bash_aliases ~/.bash_aliases
-  cp .bash_functions ~/.bash_functions
+  read -p "Do you want to setup bash? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      cp .bash_aliases ~/.bash_aliases
+      cp .bash_functions ~/.bash_functions
+      ;;
+    * ) echo "skipping bash setup";;
+  esac
 }
 
 
 install_pyenv () {
-  read -p "Do you want to install pyenv? [Y/n] " answer
+  read -p "Do you want to install pyenv? [y/N] " answer
   case "$answer" in
-    n|N ) echo "skipping pyenv install";;
-    * )
+    y|Y )
       sudo apt-get update; sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
       git clone https://github.com/pyenv/pyenv.git ~/.pyenv
       echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
@@ -103,6 +108,38 @@ install_pyenv () {
       mkdir -p ~/.pyenv/plugins
       git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
       ;;
+    * ) echo "skipping pyenv install";;
+  esac
+}
+
+
+install_fdfind () {
+  read -p "Do you want to install fd? [y/N] " answer
+  case "$answer" in
+    y|Y ) sudo apt install fd-find -y;;
+    * ) echo "skipping fd install";;
+  esac
+}
+
+install_fzf () {
+  read -p "Do you want to install fzf? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      echo "export FZF_DEFAULT_COMMAND='fdfind --type f'" >> ~/.bashrc
+      echo "export FZF_DEFAULT_OPTS='--height 20% --layout=reverse'" >> ~/.bashrc
+      git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+      ~/.fzf/install
+      ;;
+    * ) echo "skipping fzf install";;
+  esac
+}
+
+
+install_rust () {
+  read -p "Do you want to install rust? [y/N] " answer
+  case "$answer" in
+    y|Y ) curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh;;
+    * ) echo "skipping rust install";;
   esac
 }
 
@@ -119,8 +156,23 @@ main () {
   install_tmux
   setup_bash
   install_pyenv
+  # TODO install specific Python version
+  # TODO setup general virtualenv:
+  #      - ~/.python-version
+  #      - neovim packages
+  #      - numpy
+  #      - matplotlib?
+  # TODO setup virtualenv for jupyterlabs?
+  install_fdfind
+  install_rust
+  # TODO zoxide
+  # TODO docker
+  # TODO multipass
+  # TODO elixir
+  # TODO install node
+  # TODO setup node for neovim
+  # TODO phoenix
 
   the_end
 }
-
 main
