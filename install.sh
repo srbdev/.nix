@@ -50,6 +50,9 @@ setup_neovim () {
 
   (cd ~/.local/share/nvim/site/pack/git-plugins/start && \
     git clone --depth 1 https://github.com/dense-analysis/ale.git)
+    
+  (cd ~/.local/share/nvim/site/pack/git-plugins/start && \
+    git clone https://github.com/elixir-editors/vim-elixir.git)
 
   sudo apt install jq -y
 }
