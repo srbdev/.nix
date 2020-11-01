@@ -62,3 +62,16 @@ Install `jq`
 % docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=supersafepassword rabbitmq:3-management-alpine
 
 ```
+
+### Visual Studio Code
+
+List of plugins:
+- C/C++
+- CMake Tools
+- Nord
+- Python
+- Remote - SSH
+- Remote - SSH: Editing Configuration Files
+- Vim
+
+Also see the user's settings file: `visual_studio_code/settings.json`.
