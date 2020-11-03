@@ -19,5 +19,7 @@
             "after": ["<esc>"]
         }
     ],
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "diffEditor.renderSideBySide": false,
+    "markdown.preview.fontSize": 12
 }
