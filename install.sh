@@ -53,6 +53,9 @@ setup_neovim () {
     
   (cd ~/.local/share/nvim/site/pack/git-plugins/start && \
     git clone https://github.com/elixir-editors/vim-elixir.git)
+    
+  (cd ~/.local/share/nvim/site/pack/git-plugins/start && \
+    git clone https://github.com/fatih/vim-go.git)
 
   sudo apt install jq -y
 }
