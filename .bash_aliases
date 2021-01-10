@@ -16,3 +16,5 @@ alias tml='tmux ls'
 alias tma='tmux attach -t'
 # git
 alias gst='git status'
+
+alias vim='nvim'

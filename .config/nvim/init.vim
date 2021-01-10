@@ -93,12 +93,12 @@ let g:lightline = {
 \ },
 \ }
 
-let g:lightline.separator = {
-  \   'left': '', 'right': ''
-  \}
-let g:lightline.subseparator = {
-  \   'left': '', 'right': ''
-  \}
+"let g:lightline.separator = {
+"  \   'left': '', 'right': ''
+"  \}
+"let g:lightline.subseparator = {
+"  \   'left': '', 'right': ''
+"  \}
 
 " GitGutter styling to use · instead of +/-
 let g:gitgutter_sign_added = '∙'
