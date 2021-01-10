@@ -5,7 +5,7 @@ update_system () {
 }
 
 fresh_install () {
-  read -p "Is this a fresh Ubuntu 16.04 install? [y/N] " answer
+  read -p "Is this a fresh Ubuntu install? [y/N] " answer
   case "$answer" in
     y|Y )
       sudo apt install man-db -y
@@ -206,7 +206,7 @@ install_docker () {
       sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
       sudo apt-key fingerprint 0EBFCD88
-      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      sudo add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
       sudo apt-get update
       sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
@@ -231,7 +231,7 @@ install_docker () {
   read -p "Do you want to install docker-machine? [y/N] " answer
   case "$answer" in
     y|Y )
-      (base=https://github.com/docker/machine/releases/download/v0.16.0 && \
+      (base=https://github.com/docker/machine/releases/download/v0.16.2 && \
         curl -L $base/docker-machine-$(uname -s)-$(uname -m) > /tmp/docker-machine && \
         sudo mv /tmp/docker-machine /usr/local/bin/docker-machine && \
         chmod +x /usr/local/bin/docker-machine)
