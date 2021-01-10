@@ -110,7 +110,7 @@ install_neovim () {
     * ) echo "skipping neovim install";;
   esac
 
-  read -p "Do you want to setup neovim? [y|N] " answer
+  read -p "Do you want to setup neovim? [y/N] " answer
   case "$answer" in
     y|Y ) setup_neovim;;
     * ) echo "skipping neovim setup";;
@@ -147,7 +147,7 @@ install_pyenv () {
     * ) echo "skipping pyenv install";;
   esac
 
-  read -p "Do you want to setup pyenv? [y|N] " answer
+  read -p "Do you want to setup pyenv? [y/N] " answer
   case "$answer" in
     y|Y )
       echo "not implemented!"
