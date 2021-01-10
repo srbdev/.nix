@@ -16,7 +16,7 @@ fresh_install () {
       sudo apt install wget -y
       sudo apt install curl -y
       sudo apt install jq -y
-      sudo apt install python3-pip
+      sudo apt install python3-pip -y
       ;;
     * ) echo "skipping fresh install setup";;
   esac
