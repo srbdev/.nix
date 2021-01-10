@@ -1,7 +1,54 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 update_system () {
   sudo apt install && sudo apt upgrade -y
+}
+
+fresh_install () {
+  read -p "Is this a fresh Ubuntu 16.04 install? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      sudo apt install man-db -y
+      sudo apt install make build-essential -y
+      sudo apt install vim -y
+      sudo apt install tmux -y
+      sudo apt install htop -y
+      sudo apt install wget -y
+      sudo apt install curl -y
+      sudo apt install jq -y
+      ;;
+    * ) echo "skipping fresh install setup";;
+  esac
+}
+
+
+setup_bash () {
+  read -p "Do you want to setup bash? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      cp .bash_aliases ~/.bash_aliases
+      cp .bash_functions ~/.bash_functions
+
+      printf "if [ -f ~/.bash_functions ]; then\n\t. ~/.bash_functions\nfi\n\n" >> ~/.bashrc
+      echo "PS1='\${debian_chroot:+(\$debian_chroot)}changeme \w\$ '" >> ~/.bashrc
+      ;;
+    * ) echo "skipping bash setup";;
+  esac
+}
+
+setup_git () {
+  read -p "Do you want to setup git? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      ssh-keygen -t ed25519 -C "sylvain.rb@gmail.com"
+      eval "$(ssh-agent -s)"
+      ssh-add ~/.ssh/id_ed25519
+
+      git config --global --edit
+      git config --global push.default simple
+      ;;
+    * ) echo "skipping git setup";;
+  esac
 }
 
 
@@ -50,14 +97,9 @@ setup_neovim () {
 
   (cd ~/.local/share/nvim/site/pack/git-plugins/start && \
     git clone --depth 1 https://github.com/dense-analysis/ale.git)
-    
-  (cd ~/.local/share/nvim/site/pack/git-plugins/start && \
-    git clone https://github.com/elixir-editors/vim-elixir.git)
-    
+
   (cd ~/.local/share/nvim/site/pack/git-plugins/start && \
     git clone https://github.com/fatih/vim-go.git)
-
-  sudo apt install jq -y
 }
 
 install_neovim () {
@@ -75,28 +117,15 @@ install_neovim () {
 }
 
 
-install_tmux () {
+setup_tmux () {
   read -p "Do you want to install tmux? [y/N] " answer
   case "$answer" in
     y|Y )
-      sudo apt install tmux -y
       mkdir -p ~/.tmux/plugins
       git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
       cp .tmux.conf ~/.tmux.conf
       ;;
     * ) echo "skipping tmux install";;
-  esac
-}
-
-
-setup_bash () {
-  read -p "Do you want to setup bash? [y/N] " answer
-  case "$answer" in
-    y|Y )
-      cp .bash_aliases ~/.bash_aliases
-      cp .bash_functions ~/.bash_functions
-      ;;
-    * ) echo "skipping bash setup";;
   esac
 }
 
@@ -116,27 +145,43 @@ install_pyenv () {
       ;;
     * ) echo "skipping pyenv install";;
   esac
-}
 
-
-install_fdfind () {
-  read -p "Do you want to install fd? [y/N] " answer
+  read -p "Do you want to setup pyenv? [y|N] " answer
   case "$answer" in
-    y|Y ) sudo apt install fd-find -y;;
-    * ) echo "skipping fd install";;
+    y|Y )
+      echo "not implemented!"
+      ;;
+    * ) echo "skipping pyenv setup";;
   esac
 }
+
 
 install_fzf () {
   read -p "Do you want to install fzf? [y/N] " answer
   case "$answer" in
     y|Y )
-      echo "export FZF_DEFAULT_COMMAND='fdfind --type f'" >> ~/.bashrc
+      echo "export FZF_DEFAULT_COMMAND='find --type f'" >> ~/.bashrc
       echo "export FZF_DEFAULT_OPTS='--height 20% --layout=reverse'" >> ~/.bashrc
       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
       ~/.fzf/install
       ;;
     * ) echo "skipping fzf install";;
+  esac
+}
+
+
+install_go () {
+  read -p "Do you want to install Go? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      (cd && wget https://golang.org/dl/go1.15.6.linux-amd64.tar.gz)
+      (cd && sudo tar -C /usr/local -xzf go1.15.6.linux-amd64.tar.gz)
+      mkdir -p ~/go/bin
+      mkdir -p ~/go/src/github.com/srbdev
+      echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
+      export PATH="$PATH:/usr/local/go/bin" && go version
+      ;;
+    * ) echo "skipping go install";;
   esac
 }
 
@@ -150,34 +195,80 @@ install_rust () {
 }
 
 
+install_docker () {
+  read -p "Do you want to install Docker? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      sudo mkdir /etc/systemd/system/docker.service.d
+
+      sudo apt-get remove docker docker-engine docker.io containerd runc
+      sudo apt-get update
+      sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      sudo apt-key fingerprint 0EBFCD88
+      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      sudo apt-get update
+      sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+
+      sudo systemctl daemon-reload
+      sudo systemctl restart docker
+
+      sudo docker run --rm hello-world
+      ;;
+    * ) echo "skipping Docker install";;
+  esac
+
+  read -p "Do you want to install docker-compose? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      sudo chmod +x /usr/local/bin/docker-compose
+      docker-compose --version
+      ;;
+    * ) echo "skipping docker-compose install";;
+  esac
+
+  read -p "Do you want to install docker-machine? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      (base=https://github.com/docker/machine/releases/download/v0.16.0 && \
+        curl -L $base/docker-machine-$(uname -s)-$(uname -m) > /tmp/docker-machine && \
+        sudo mv /tmp/docker-machine /usr/local/bin/docker-machine && \
+        chmod +x /usr/local/bin/docker-machine)
+      docker-machine --version
+      ;;
+    * ) echo "skipping docker-machine install";;
+  esac
+
+  read -p "Do you want to use Docker as a non-root user? [y/N] " answer
+  case "$answer" in
+    y|Y )
+      echo "run: sudo usermod -aG docker [username]"
+      ;;
+    * ) echo "skipping running Docker as a non-root user";;
+  esac
+}
+
+
 the_end () {
-  echo 'Type: exec "$SHELL" to reload shell'
   echo "done."
 }
 
 
 main () {
   update_system
-  install_neovim
-  install_tmux
+  fresh_install
+
   setup_bash
+  setup_git
+  setup_tmux
+
+  install_neovim
+  install_fzf
   install_pyenv
-  # TODO install specific Python version
-  # TODO setup general virtualenv:
-  #      - ~/.python-version
-  #      - neovim packages
-  #      - numpy
-  #      - matplotlib?
-  # TODO setup virtualenv for jupyterlabs?
-  install_fdfind
+  install_go
   install_rust
-  # TODO zoxide
-  # TODO docker
-  # TODO multipass
-  # TODO elixir
-  # TODO install node
-  # TODO setup node for neovim
-  # TODO phoenix
+  install_docker
 
   the_end
 }
