@@ -175,8 +175,8 @@ install_go () {
   read -p "Do you want to install Go? [y/N] " answer
   case "$answer" in
     y|Y )
-      (cd && wget https://golang.org/dl/go1.15.6.linux-amd64.tar.gz)
-      (cd && sudo tar -C /usr/local -xzf go1.15.6.linux-amd64.tar.gz)
+      (cd && wget https://golang.org/dl/go1.15.6.linux-$(dpkg --print-architecture).tar.gz)
+      (cd && sudo tar -C /usr/local -xzf go1.15.6.linux-$(dpkg --print-architecture).tar.gz)
       mkdir -p ~/go/bin
       mkdir -p ~/go/src/github.com/srbdev
       echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
