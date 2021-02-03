@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 update_system () {
-  sudo apt install && sudo apt upgrade -y
+  sudo apt update && sudo apt upgrade -y
 }
 
 fresh_install () {
