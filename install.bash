@@ -141,6 +141,11 @@ install_docker () {
   sudo usermod -aG docker sb
 }
 
+setup_ufw() {
+  sudo ufw default deny incoming
+  sudo ufw allow 2222/tcp
+  sudo ufw enable
+}
 
 print_sshkey() {
   echo
@@ -166,6 +171,8 @@ main () {
   install_fzf
   install_go
   install_docker
+
+  setup_ufw
 
   print_sshkey
 
