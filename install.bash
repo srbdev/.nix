@@ -143,7 +143,9 @@ install_docker () {
 
 
 print_sshkey() {
+  echo
   cat ~/.ssh/id_ed25519.pub
+  echo
 }
 
 
