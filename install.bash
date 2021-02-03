@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -Eeuo pipefail
+
 update_system () {
   sudo apt update && sudo apt upgrade -y
 }
